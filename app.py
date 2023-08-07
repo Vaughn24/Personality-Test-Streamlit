@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 def txt_to_list(txt_file_path):
     """
@@ -21,28 +22,42 @@ def likert_scale_survey(list_of_questions):
     # Questions and corresponding Likert scale options
     questions = list_of_questions
 
-    likert_options = ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree']
+    likert_options = ['','Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree']
 
     # Initialize a dictionary to store user responses
     responses = {}
 
     # Loop through the questions and display them with a Likert scale widget
     for idx, question in enumerate(questions):
-        st.subheader(f'Q{idx + 1}: {question}')
-        response = st.selectbox(' ', likert_options, key=f'likert_{idx}')
-        responses[f'Q{idx + 1}'] = response
+        if idx == 0 or idx == 1 or responses.get(f'Q{idx}'):
+            st.subheader(f'Q{idx + 1}: {question}')
+            key = f'question_{idx}'
+            placeholder = st.empty()
+            st.markdown(
+                """ <style>
+                        div[role="radiogroup"] >  :first-child{
+                            display: none !important;
+                        }
+                    </style>
+                    """,
+                unsafe_allow_html=True
+            )
+            response = st.radio(' ', likert_options, key=key, horizontal=True, index=0)
+            responses[f'Q{idx + 1}'] = response
+            placeholder.empty()
 
     st.write('\n\n---\n\n')
     st.subheader('Survey Summary')
 
-    # Display the user responses in a table
-    response_table = [(question, responses[question]) for question in responses]
-    st.table(response_table)
+    # Display the user responses in a table with the index of the chosen option
+    response_table = [(f'Question', 'Response', 'Index')]
+    response_table += [(f'Q{idx+1}', responses[question], likert_options.index(responses[question])) for idx, question in enumerate(responses)]
+    st.dataframe(response_table)
 
 
 
 if __name__ == '__main__':
     #
     questions_list = txt_to_list('asset/list-of-questions.txt')
-    #print(result_list)
+    #print("TEST")
     likert_scale_survey(questions_list)
