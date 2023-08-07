@@ -49,14 +49,14 @@ def likert_scale_survey(list_of_questions):
     st.write('\n\n---\n\n')
     st.subheader('Survey Summary')
 
-    # Display the user responses in a table with the index of the chosen option
+    # Display the user responses in dataframe panda
     response_table = [(f'Q{idx+1}', responses[question], likert_options.index(responses[question])) for idx, question in enumerate(responses)]
     df_response_table = pd.DataFrame(response_table, columns=['Question', 'Response', 'Response Index'])
     return df_response_table
 
 if __name__ == '__main__':
     #
-    questions_list = txt_to_list('asset/list-of-questions.txt')
+    questions_list = txt_to_list('asset/list-of-questionsV2.txt')
     df_survey_responses = likert_scale_survey(questions_list)
     st.dataframe(df_survey_responses)
-    print(df_survey_responses)
+    #print(df_survey_responses)
