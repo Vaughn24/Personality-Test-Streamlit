@@ -1,5 +1,20 @@
 import streamlit as st
 import pandas as pd
+from streamlit_extras.switch_page_button import switch_page
+
+
+def remove_sidebar():
+    st.set_page_config(initial_sidebar_state="collapsed")
+    st.markdown(
+        """
+    <style>
+        [data-testid="collapsedControl"] {
+            display: none
+        }
+    </style>
+    """,
+        unsafe_allow_html=True,
+    )
 
 def txt_to_list(txt_file_path):
     """
@@ -54,9 +69,16 @@ def likert_scale_survey(list_of_questions):
     df_response_table = pd.DataFrame(response_table, columns=['Question', 'Response', 'Response Index'])
     return df_response_table
 
+def next_button():
+    st.markdown('<a href="/page1" target="_self">Next page</a>', unsafe_allow_html=True)
+
+
 if __name__ == '__main__':
     #
+    remove_sidebar()
     questions_list = txt_to_list('asset/list-of-questionsV2.txt')
     df_survey_responses = likert_scale_survey(questions_list)
     st.dataframe(df_survey_responses)
+    next_button()
+    #switch_page("page1")
     #print(df_survey_responses)
