@@ -17,3 +17,4 @@ if __name__ == '__main__':
     st.write("""
     My first app hello!
     """)
+    #print(df_survey_responses)

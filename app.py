@@ -70,7 +70,34 @@ def likert_scale_survey(list_of_questions):
     return df_response_table
 
 def next_button():
-    st.markdown('<a href="/page1" target="_self">Next page</a>', unsafe_allow_html=True)
+    style = """<style>
+    .row-widget.stButton {
+    text-align: right;}
+    </style>"""
+    st.markdown(style, unsafe_allow_html=True)
+    if st.button("Next Page", type):
+        switch_page("page1")
+    #st.markdown('<a href="/page1" target="_self">Next page</a>', unsafe_allow_html=True)
+
+def button():
+    style = """<style>
+        .row-widget.stButton {
+        text-align: center;
+        }
+        .row-widget.stButton > button:nth-child(1) {
+        text-align: left;
+        color:red;
+        }
+        .row-widget.stButton > button:nth-child(2) {
+        text-align: right;
+        }
+        </style>"""
+    st.markdown(style, unsafe_allow_html=True)
+    if st.button("Prev Page"):
+        switch_page("page1")  # Replace this with your implementation for going to the previous page
+    if st.button("Next Page"):
+        switch_page("page1")  # Replace this with your implementation for going to the next page
+
 
 
 if __name__ == '__main__':
@@ -79,6 +106,6 @@ if __name__ == '__main__':
     questions_list = txt_to_list('asset/list-of-questionsV2.txt')
     df_survey_responses = likert_scale_survey(questions_list)
     st.dataframe(df_survey_responses)
-    next_button()
-    #switch_page("page1")
+    button()
+
     #print(df_survey_responses)
