@@ -28,53 +28,11 @@ def txt_to_list(txt_file_path):
         data_list = txt_file.read().splitlines()
     return data_list
 
-def likert_scale_survey(list_of_questions):
-    """
-    This function will create a survey form base on the list given questions
-    :param list_of_questions: Insert a list of questions
-    :return:
-    """
-
-
-    # Questions and corresponding Likert scale options
-    questions = list_of_questions
-
-    likert_options = ['','Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree']
-
-    # Initialize a dictionary to store user responses
-    responses = {}
-
-    # Loop through the questions and display them with a Likert scale widget
-    for idx, question in enumerate(questions):
-        if idx == 0 or idx == 1 or responses.get(f'Q{idx}'):
-            st.subheader(f'Q{idx + 1}: {question}')
-            key = f'question_{idx}'
-            #placeholder = st.empty()
-            st.markdown(
-                """ <style>
-                        div[role="radiogroup"] >  :first-child{
-                            display: none !important;
-                        }
-                    </style>
-                    """,
-                unsafe_allow_html=True
-            )
-            response = st.radio(' ', likert_options, key=key, horizontal=True, index=0)
-            responses[f'Q{idx + 1}'] = response
-            #placeholder.empty()
-
-    st.write('\n\n---\n\n')
-    st.subheader('Survey Summary')
-
-    # Display the user responses in dataframe panda
-    response_table = [(f'Q{idx+1}', responses[question], likert_options.index(responses[question])) for idx, question in enumerate(responses)]
-    df_response_table = pd.DataFrame(response_table, columns=['Question', 'Response', 'Response Index'])
-    return df_response_table
 
 if __name__ == '__main__':
     remove_sidebar()
     st.title('Physiognomy Personality Test')
-    questions = txt_to_list('asset/list-of-questions.txt')
+    questions = txt_to_list('asset/list-of-questionsV2.txt')
     # Questions and corresponding Likert scale options
     likert_options = ['','Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree']
     # Initialize a dictionary to store user responses
@@ -118,31 +76,25 @@ if __name__ == '__main__':
     existing_data = pd.read_excel(excel_file_path, sheet_name=sheet_name)
 
     if st.button("Next Page"):
-        questions_no_list = df_response_table['Question']
-        response_index_list = df_response_table['Response Index']
-        for col_name, col_values in zip(questions_no_list,response_index_list):
-            df_response_table[col_name] = col_values
-            existing_data.loc[0, col_name] = col_values
-            existing_data.to_excel(excel_file_path, sheet_name=sheet_name, index=False)
-
-
-
-        excel_file_path = "user_answers.xlsx"
-        sheet_name = "Sheet1"
-
-        try:
-
-
-
-            st.success("Data successfully stored in the Excel file!")
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
+        nan_check = (df_response_table['Response Index'] == 0).any()
+        if nan_check:
+            st.error("Please answer all the questions.")
+        else:
+            questions_no_list = df_response_table['Question']
+            response_index_list = df_response_table['Response Index']
+            for col_name, col_values in zip(questions_no_list, response_index_list):
+                df_response_table[col_name] = col_values
+                existing_data.loc[0, col_name] = col_values
+                existing_data.to_excel(excel_file_path, sheet_name=sheet_name, index=False)
+            try:
+                st.success("Data successfully stored in the Excel file!")
+                switch_page("page4")
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
 
 
 
     elif st.button("Prev Page"):
-        nan_check = (df_response_table['Response Index'] == 0).any()
-        print(nan_check)
-        #switch_page("page2")
+        switch_page("page2")
 
     #print(df_survey_responses)
