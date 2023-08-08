@@ -70,7 +70,7 @@ def likert_scale_survey(list_of_questions):
     df_response_table = pd.DataFrame(response_table, columns=['Question', 'Response', 'Response Index'])
     return df_response_table
 
-def next_button():
+def button():
     style = """<style>
     .row-widget.stButton {
     text-align: right;}
@@ -89,6 +89,6 @@ if __name__ == '__main__':
     questions_list = txt_to_list('asset/list-of-questionsV2.txt')
     df_survey_responses = likert_scale_survey(questions_list)
     st.dataframe(df_survey_responses)
-    next_button()
+    button()
 
     #print(df_survey_responses)

@@ -41,7 +41,8 @@ if __name__ == '__main__':
         # Save the answer to an Excel file
         columns = ['Would you like to proceed?', 'First Name', 'Last Name', 'Birth Date', 'Gender', 'Email Address']
         df = pd.DataFrame(columns=columns)
-        df.loc[0, 'Would you like to proceed?'] = answer
+        default=[answer,' ',' ',' ',' ',' ']
+        df.loc[len(df)] = default
         excel_file_name = 'user_answers.xlsx'
         wb = openpyxl.Workbook()
         if os.path.exists(excel_file_name):
