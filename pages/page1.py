@@ -22,10 +22,6 @@ def remove_sidebar():
 
 
 
-
-
-
-
 if __name__ == '__main__':
     remove_sidebar()
     st.title('Data Privacy')

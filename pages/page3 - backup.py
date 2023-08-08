@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from streamlit_extras.switch_page_button import switch_page
-from openpyxl import load_workbook
 
 
 def remove_sidebar():
@@ -70,15 +69,22 @@ def likert_scale_survey(list_of_questions):
     response_table = [(f'Q{idx+1}', responses[question], likert_options.index(responses[question])) for idx, question in enumerate(responses)]
     df_response_table = pd.DataFrame(response_table, columns=['Question', 'Response', 'Response Index'])
     return df_response_table
+def likert_scale_surveyV2(list_of_questions):
+    """
+    This function will create a survey form base on the list given questions
+    :param list_of_questions: Insert a list of questions
+    :return:
+    """
 
-if __name__ == '__main__':
-    remove_sidebar()
-    st.title('Physiognomy Personality Test')
-    questions = txt_to_list('asset/list-of-questions.txt')
+
     # Questions and corresponding Likert scale options
+    questions = list_of_questions
+
     likert_options = ['','Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree']
+
     # Initialize a dictionary to store user responses
     responses = {}
+
     # Loop through the questions and display them with a Likert scale widget
     for idx, question in enumerate(questions):
         if idx == 0 or idx == 1 or responses.get(f'Q{idx}'):
@@ -104,45 +110,31 @@ if __name__ == '__main__':
     # Display the user responses in dataframe panda
     response_table = [(f'Q{idx+1}', responses[question], likert_options.index(responses[question])) for idx, question in enumerate(responses)]
     df_response_table = pd.DataFrame(response_table, columns=['Question', 'Response', 'Response Index'])
+    return df_response_table
 
-
-    st.dataframe(df_response_table)
-
+def button():
     style = """<style>
     .row-widget.stButton {
     text-align: right;}
     </style>"""
     st.markdown(style, unsafe_allow_html=True)
-    excel_file_path = "user_answers.xlsx"
-    sheet_name = "Sheet1"
-    existing_data = pd.read_excel(excel_file_path, sheet_name=sheet_name)
-
     if st.button("Next Page"):
-        questions_no_list = df_response_table['Question']
-        response_index_list = df_response_table['Response Index']
-        for col_name, col_values in zip(questions_no_list,response_index_list):
-            df_response_table[col_name] = col_values
-            existing_data.loc[0, col_name] = col_values
-            existing_data.to_excel(excel_file_path, sheet_name=sheet_name, index=False)
-
-
-
         excel_file_path = "user_answers.xlsx"
         sheet_name = "Sheet1"
+        new_column_data =
 
-        try:
-
-
-
-            st.success("Data successfully stored in the Excel file!")
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
-
-
-
-    elif st.button("Prev Page"):
-        nan_check = (df_response_table['Response Index'] == 0).any()
-        print(nan_check)
         #switch_page("page2")
+    elif st.button("Prev Page"):
+        switch_page("page2")
+    #st.markdown('<a href="/page1" target="_self">Next page</a>', unsafe_allow_html=True)
+
+
+if __name__ == '__main__':
+    remove_sidebar()
+    st.title('Physiognomy Personality Test')
+    questions_list = txt_to_list('asset/list-of-questions.txt')
+    df_survey_responses = likert_scale_surveyV2(questions_list)
+    st.dataframe(df_survey_responses)
+    button()
 
     #print(df_survey_responses)

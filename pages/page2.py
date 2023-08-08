@@ -50,15 +50,13 @@ if __name__ == '__main__':
     email = st.text_input("Email Address",value=existing_data.loc[0,'Email Address'])
 
     if st.button("Next Page"):
-        if not first_name:
+        if first_name==" ":
             st.warning("Please enter your First Name")
-        elif not last_name:
+        elif last_name==" ":
             st.warning("Please enter your Last Name")
         elif not birth_date:
             st.warning("Please select your Birth Date")
-        elif not gender:
-            st.warning("Please select your Gender")
-        elif not email:
+        elif email==" ":
             st.warning("Please enter your Email Address")
         else:
             # Create a DataFrame from the form data
@@ -70,7 +68,6 @@ if __name__ == '__main__':
                 "Email Address": [email]
             }
             df = pd.DataFrame(data)
-
 
             try:
 
