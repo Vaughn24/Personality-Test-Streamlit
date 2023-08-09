@@ -32,7 +32,7 @@ def txt_to_list(txt_file_path):
 if __name__ == '__main__':
     remove_sidebar()
     st.title('Physiognomy Personality Test')
-    questions = txt_to_list('asset/list-of-questionsV2.txt')
+    questions = txt_to_list('asset/list-of-questions.txt')
     # Questions and corresponding Likert scale options
     likert_options = ['','Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree']
     # Initialize a dictionary to store user responses
@@ -57,14 +57,14 @@ if __name__ == '__main__':
             #placeholder.empty()
 
     st.write('\n\n---\n\n')
-    #st.subheader('Survey Summary')
+    st.subheader('Survey Summary')
 
     # Display the user responses in dataframe panda
     response_table = [(f'Q{idx+1}', responses[question], likert_options.index(responses[question])) for idx, question in enumerate(responses)]
     df_response_table = pd.DataFrame(response_table, columns=['Question', 'Response', 'Response Index'])
 
 
-    #st.dataframe(df_response_table)
+    st.dataframe(df_response_table)
 
     style = """<style>
     .row-widget.stButton {
@@ -85,6 +85,7 @@ if __name__ == '__main__':
             questions_no_list = df_response_table['Question']
             response_index_list = df_response_table['Response Index']
             for col_name, col_values in zip(questions_no_list, response_index_list):
+                df_response_table[col_name] = col_values
                 existing_data.loc[0, col_name] = col_values
                 existing_data.to_excel(excel_file_path, sheet_name=sheet_name, index=False)
             try:

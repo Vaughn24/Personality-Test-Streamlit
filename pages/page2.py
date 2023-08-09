@@ -46,7 +46,7 @@ if __name__ == '__main__':
     first_name = st.text_input("First Name",value=existing_data.loc[0,'First Name'])
     last_name = st.text_input("Last Name",value=existing_data.loc[0,'Last Name'])
     birth_date = st.date_input("Birth Date", min_value=datetime.date(1950,1,1), max_value=datetime.date(2024,1,1),value=bd_value)
-    gender = st.radio("Gender", ["Male", "Female", "Other"], horizontal=True,index=g_index)
+    gender = st.radio("Gender", ["Male", "Female", "Prefer not to say"], horizontal=True,index=g_index)
     email = st.text_input("Email Address",value=existing_data.loc[0,'Email Address'])
 
     if st.button("Next Page"):

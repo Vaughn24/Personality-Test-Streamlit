@@ -198,7 +198,7 @@ if __name__ == '__main__':
 
     df_Hex_column = ['PERSONALITY TEST', 'RATING', 'TOTAL SCORE']
     Hex_data = {
-        df_Hex_column[0]: ['test'],
+        df_Hex_column[0]: ['HEXACO'],
         df_Hex_column[1]:  HEX_rating,
         df_Hex_column[2]: PA_sum
     }
