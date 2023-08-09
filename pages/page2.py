@@ -50,14 +50,23 @@ if __name__ == '__main__':
     email = st.text_input("Email Address",value=existing_data.loc[0,'Email Address'])
 
     if st.button("Next Page"):
-        if first_name==" ":
+        if first_name==" " or first_name=="":
+            if st.button("Prev Page"):
+                switch_page("page1")
             st.warning("Please enter your First Name")
-        elif last_name==" ":
+
+        elif last_name==" " or last_name=="":
+            if st.button("Prev Page"):
+                switch_page("page1")
             st.warning("Please enter your Last Name")
+
         elif not birth_date:
             st.warning("Please select your Birth Date")
-        elif email==" ":
+        elif email==" " or email == "":
+            if st.button("Prev Page"):
+                switch_page("page1")
             st.warning("Please enter your Email Address")
+
         else:
             # Create a DataFrame from the form data
             data = {

@@ -234,7 +234,9 @@ if __name__ == '__main__':
     text-align: right;}
     </style>"""
     st.markdown(style, unsafe_allow_html=True)
-    if st.button("Checking Button"):
+    if st.button("Finish"):
+        switch_page('page5')
+    elif st.button("Checking Button"):
         favorable_scores = [questionnaire_score_not_scaled[key] for key in favorable if
                             key in questionnaire_score_not_scaled]
         unfavorable_scores = [questionnaire_score_not_scaled[key] for key in unfavorable if
