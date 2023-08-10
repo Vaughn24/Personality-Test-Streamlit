@@ -32,7 +32,7 @@ def txt_to_list(txt_file_path):
 if __name__ == '__main__':
     remove_sidebar()
     st.title('Physiognomy Personality Test')
-    questions = txt_to_list('asset/list-of-questionsV2.txt')
+    questions = txt_to_list('asset/list-of-questions.txt')
     # Questions and corresponding Likert scale options
     likert_options = ['','Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree']
     # Initialize a dictionary to store user responses

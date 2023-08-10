@@ -250,7 +250,14 @@ if __name__ == '__main__':
             for i, j in zip(favorable, unfavorable):
                 writer.writerow([i, questionnaire_score_not_scaled[i], j, questionnaire_score_not_scaled[j]])
         csvfile.close()
+    elif st.button("Save to database"):
+        excel_file_path = "user_answers.xlsx"
+        sheet_name = "Sheet1"
+        existing_data = pd.read_excel(excel_file_path, sheet_name=sheet_name)
 
+
+
+        print(df_PA_results["RATING"][0])
 
 
 
