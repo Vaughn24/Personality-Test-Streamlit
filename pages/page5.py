@@ -43,7 +43,9 @@ if __name__ == '__main__':
     row_index = 0
     values_list = df3.iloc[row_index].tolist()
 
-    rating = values_list[6::]
+
+    # IF the columns is modified change this #######################################################################
+    rating = values_list[7::]
     questionnaire_score = {key: value for key, value in enumerate(rating, 1)}
 
     # For checking

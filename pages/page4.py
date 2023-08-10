@@ -43,6 +43,7 @@ if __name__ == '__main__':
         current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         image_extension = image_file.name.split('.')[-1].lower()
         image_file_name = str(Name+current_time)+"." + image_extension
+        image_file_name = image_file_name.replace(" ","")
 
         #
         with open(os.path.join("user_img", image_file_name), "wb") as f:
@@ -50,7 +51,19 @@ if __name__ == '__main__':
         st.success("Saved File")
 
     if st.button("Next Page"):
-        switch_page("page5")
+        excel_file_path = "user_answers.xlsx"
+        sheet_name = "Sheet1"
+        existing_data = pd.read_excel(excel_file_path, sheet_name=sheet_name)
+        #print(existing_data)
+        try:
+            #existing_data.loc[0:2, "Image Name"] = image_file_name
+            existing_data.insert(6,"Image Name",image_file_name)
+            existing_data.to_excel(excel_file_path, sheet_name=sheet_name, index=False)
+            switch_page("page5")
+        except:
+            st.write("Please upload an image")
+
+        #switch_page("page5")
     elif st.button("Prev Page"):
         switch_page("page3")
 
