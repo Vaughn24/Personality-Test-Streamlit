@@ -3,6 +3,7 @@ import datetime
 import pandas as pd
 import numpy as np
 from streamlit_extras.switch_page_button import switch_page
+import re
 def remove_sidebar():
 
     st.set_page_config(initial_sidebar_state="collapsed")
@@ -17,6 +18,14 @@ def remove_sidebar():
         unsafe_allow_html=True,
     )
 
+def email_valid(email):
+    # Regular expression pattern for a valid email address
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+    if re.match(pattern, email):
+        return True
+    else:
+        return False
 
 if __name__ == '__main__':
     remove_sidebar()
@@ -47,7 +56,8 @@ if __name__ == '__main__':
     last_name = st.text_input("Last Name",value=existing_data.loc[0,'Last Name'])
     birth_date = st.date_input("Birth Date", min_value=datetime.date(1950,1,1), max_value=datetime.date(2024,1,1),value=bd_value)
     gender = st.radio("Gender", ["Male", "Female", "Prefer not to say"], horizontal=True,index=g_index)
-    email = st.text_input("Email Address",value=existing_data.loc[0,'Email Address'])
+    #email = st.text_input("Email Address",value=existing_data.loc[0,'Email Address'])
+    email = st.text_input("Email Address")
 
     if st.button("Next Page"):
         if first_name==" " or first_name=="":
@@ -66,7 +76,8 @@ if __name__ == '__main__':
             if st.button("Prev Page"):
                 switch_page("page1")
             st.warning("Please enter your Email Address")
-
+        elif not email_valid(email):
+            st.warning("Please enter a valid Email Address")
         else:
             # Create a DataFrame from the form data
             data = {
