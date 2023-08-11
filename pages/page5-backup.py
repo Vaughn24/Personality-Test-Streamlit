@@ -262,12 +262,10 @@ if __name__ == '__main__':
             key = factory_and_facet[idx]
             value = FnF_rating[idx] + "- " + str(GT_FnF[idx])
             fnf_dict[key] = value
+
         df_fnf = pd.DataFrame([fnf_dict])
-        Hex_dict = {
-            'Hexaco' : HEX_rating + "- " + str(PA_sum)
-        }
-        df_Hex = pd.DataFrame([Hex_dict])
-        combined_df = pd.concat([name_to_image, df_pa, df_fnf, df_Hex], axis=1)
+
+        combined_df = pd.concat([name_to_image, df_pa, df_fnf], axis=1)
         new_row_df = combined_df
         excel_file_name= "physiognomy-pt-dataset.xlsx"
 
@@ -285,7 +283,64 @@ if __name__ == '__main__':
             next_row += 1
         wb.save(excel_file_name)
         switch_page('page6')
+    elif st.button("Checking Button"):
+        favorable_scores = [questionnaire_score_not_scaled[key] for key in favorable if
+                            key in questionnaire_score_not_scaled]
+        unfavorable_scores = [questionnaire_score_not_scaled[key] for key in unfavorable if
+                              key in questionnaire_score_not_scaled]
 
+        output_file = 'checking.csv'
+
+        with open(output_file, 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(['Favorable', 'Rating', 'Unfavorable', 'Rating'])  # Write header if needed
+            for i, j in zip(favorable, unfavorable):
+                writer.writerow([i, questionnaire_score_not_scaled[i], j, questionnaire_score_not_scaled[j]])
+        csvfile.close()
+    elif st.button("Save to database"):
+        user_answers = "user_answers.xlsx"
+        pt_dataset = "physiognomy-pt-dataset.xlsx"
+        sheet_name = "Sheet1"
+        user_answers_df = pd.read_excel(user_answers, sheet_name=sheet_name)
+        pt_data_df = pd.read_excel(pt_dataset, sheet_name=sheet_name)
+
+        pt_data_df2 = pt_data_df.copy()
+        name_to_image = user_answers_df.iloc[0:,:7]
+
+
+        new_row = pd.concat([pt_data_df2, name_to_image], ignore_index=True)
+
+        pa_dict = {}
+        for idx in range(len(personality_aspect)):
+            key = personality_aspect[idx]
+            value = PA_rating[idx] + "- " + str(GT_PA[idx])
+            pa_dict[key] = value
+        df_pa = pd.DataFrame([pa_dict])
+        fnf_dict = {}
+        for idx in range(len(factory_and_facet)):
+            key = factory_and_facet[idx]
+            value = FnF_rating[idx] + "- " + str(GT_FnF[idx])
+            fnf_dict[key] = value
+
+        df_fnf = pd.DataFrame([fnf_dict])
+
+        combined_df = pd.concat([name_to_image, df_pa, df_fnf], axis=1)
+        new_row_df = combined_df
+        excel_file_name= "physiognomy-pt-dataset.xlsx"
+
+        wb = openpyxl.load_workbook(excel_file_name)
+
+        sheet_name = 'Sheet1'
+        sheet = wb[sheet_name]
+
+        # Find the next empty row
+        next_row = sheet.max_row + 1
+
+        for index, row in new_row_df.iterrows():
+            for col_idx, value in enumerate(row, start=1):
+                sheet.cell(row=next_row, column=col_idx, value=value)
+            next_row += 1
+        wb.save(excel_file_name)
 
 
 
