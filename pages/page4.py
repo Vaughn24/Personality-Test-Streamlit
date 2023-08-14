@@ -45,22 +45,23 @@ if __name__ == '__main__':
         image_file_name = str(Name+current_time)+"." + image_extension
         image_file_name_final = image_file_name.replace(" ","")
 
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
+    with col6:
+        if st.button("Submit"):
+            excel_file_path = "user_answers.xlsx"
+            sheet_name = "Sheet1"
+            existing_data = pd.read_excel(excel_file_path, sheet_name=sheet_name)
+            # print(existing_data)
+            with open(os.path.join("user_img", image_file_name_final), "wb") as f:
+                f.write(image_file.getbuffer())
+            st.success("Saved File")
+            try:
+                existing_data.insert(6, "Image Name", image_file_name_final)
+                existing_data.to_excel(excel_file_path, sheet_name=sheet_name, index=False)
+            except:
+                st.write("Please upload an image")
 
-    if st.button("Next Page"):
-        excel_file_path = "user_answers.xlsx"
-        sheet_name = "Sheet1"
-        existing_data = pd.read_excel(excel_file_path, sheet_name=sheet_name)
-        #print(existing_data)
-        with open(os.path.join("user_img", image_file_name_final), "wb") as f:
-            f.write(image_file.getbuffer())
-        st.success("Saved File")
-        try:
-            existing_data.insert(6,"Image Name",image_file_name_final)
-            existing_data.to_excel(excel_file_path, sheet_name=sheet_name, index=False)
-        except:
-            st.write("Please upload an image")
+            switch_page("page5")
 
-        switch_page("page5")
-    elif st.button("Prev Page"):
-        switch_page("page3")
+
 

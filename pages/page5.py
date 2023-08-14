@@ -238,7 +238,7 @@ if __name__ == '__main__':
     text-align: right;}
     </style>"""
     st.markdown(style, unsafe_allow_html=True)
-    if st.button("Finish"):
+    if st.button("Next Page"):
         user_answers = "user_answers.xlsx"
         pt_dataset = "physiognomy-pt-dataset.xlsx"
         sheet_name = "Sheet1"
@@ -269,7 +269,7 @@ if __name__ == '__main__':
         df_Hex = pd.DataFrame([Hex_dict])
         combined_df = pd.concat([name_to_image, df_pa, df_fnf, df_Hex], axis=1)
         new_row_df = combined_df
-        excel_file_name= "dataset/physiognomy-pt-dataset.xlsx"
+        excel_file_name= 'physiognomy-pt-dataset.xlsx'
 
         wb = openpyxl.load_workbook(excel_file_name)
 

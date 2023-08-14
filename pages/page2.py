@@ -30,13 +30,6 @@ def email_valid(email):
 if __name__ == '__main__':
     remove_sidebar()
     st.title('Personal Information')
-    style = """<style>
-    .row-widget.stButton {
-    text-align: right;}
-    </style>"""
-    st.markdown(style, unsafe_allow_html=True)
-
-
     # Load the existing Excel file
     excel_file_path = "user_answers.xlsx"
     sheet_name = "Sheet1"
@@ -58,49 +51,62 @@ if __name__ == '__main__':
     gender = st.radio("Gender", ["Male", "Female", "Prefer not to say"], horizontal=True,index=g_index)
     #email = st.text_input("Email Address",value=existing_data.loc[0,'Email Address'])
     email = st.text_input("Email Address")
+    col1, col2, col3,col4, col5,col6 = st.columns(6)
+    style = """<style>
+    .row-widget.stButton {
+    margin-top: 2rem}
+    </style>"""
+    st.markdown(style, unsafe_allow_html=True)
 
-    if st.button("Next Page"):
-        if first_name==" " or first_name=="":
-            if st.button("Prev Page"):
-                switch_page("page1")
-            st.warning("Please enter your First Name")
 
-        elif last_name==" " or last_name=="":
-            if st.button("Prev Page"):
-                switch_page("page1")
-            st.warning("Please enter your Last Name")
 
-        elif not birth_date:
-            st.warning("Please select your Birth Date")
-        elif email==" " or email == "":
-            if st.button("Prev Page"):
-                switch_page("page1")
-            st.warning("Please enter your Email Address")
-        elif not email_valid(email):
-            st.warning("Please enter a valid Email Address")
-        else:
-            # Create a DataFrame from the form data
-            data = {
-                "First Name": [first_name],
-                "Last Name": [last_name],
-                "Birth Date": [birth_date],
-                "Gender": [gender],
-                "Email Address": [email]
-            }
-            df = pd.DataFrame(data)
 
-            try:
+    with col6:
+        if st.button("Next Page"):
+            if first_name == " " or first_name == "":
+                if st.button("Prev Page"):
+                    switch_page("page1")
+                st.warning("Please enter your First Name")
 
-                existing_data.loc[0,'First Name'] = first_name
-                existing_data.loc[0, 'Last Name'] = last_name
-                existing_data.loc[0, 'Birth Date'] = birth_date
-                existing_data.loc[0, 'Gender'] = gender
-                existing_data.loc[0, 'Email Address'] = email
-                existing_data.to_excel(excel_file_path, sheet_name=sheet_name, index=False)
-                st.success("Data successfully stored in the Excel file!")
-            except Exception as e:
-                st.error(f"An error occurred: {e}")
-            switch_page("page3")
-    elif st.button("Prev Page"):
-        switch_page("page1")
+            elif last_name == " " or last_name == "":
+                if st.button("Prev Page"):
+                    switch_page("page1")
+                st.warning("Please enter your Last Name")
+
+            elif not birth_date:
+                st.warning("Please select your Birth Date")
+            elif email == " " or email == "":
+                if st.button("Prev Page"):
+                    switch_page("page1")
+                st.warning("Please enter your Email Address")
+            elif not email_valid(email):
+                st.warning("Please enter a valid Email Address")
+            else:
+                # Create a DataFrame from the form data
+                data = {
+                    "First Name": [first_name],
+                    "Last Name": [last_name],
+                    "Birth Date": [birth_date],
+                    "Gender": [gender],
+                    "Email Address": [email]
+                }
+                df = pd.DataFrame(data)
+
+                try:
+
+                    existing_data.loc[0, 'First Name'] = first_name
+                    existing_data.loc[0, 'Last Name'] = last_name
+                    existing_data.loc[0, 'Birth Date'] = birth_date
+                    existing_data.loc[0, 'Gender'] = gender
+                    existing_data.loc[0, 'Email Address'] = email
+                    existing_data.to_excel(excel_file_path, sheet_name=sheet_name, index=False)
+                    st.success("Data successfully stored in the Excel file!")
+                except Exception as e:
+                    st.error(f"An error occurred: {e}")
+                switch_page("page3")
+
+    with col1:
+        if st.button("Prev Page"):
+            switch_page("page1")
+
 

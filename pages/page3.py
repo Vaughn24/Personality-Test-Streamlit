@@ -32,14 +32,14 @@ def txt_to_list(txt_file_path):
 if __name__ == '__main__':
     remove_sidebar()
     st.title('Physiognomy Personality Test')
-    questions = txt_to_list('asset/list-of-questions.txt')
+    questions = txt_to_list('asset/list-of-questionsV2.txt')
     # Questions and corresponding Likert scale options
     likert_options = ['','Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree']
     # Initialize a dictionary to store user responses
     responses = {}
     # Loop through the questions and display them with a Likert scale widget
     for idx, question in enumerate(questions):
-        if idx == 0 or idx == 1 or responses.get(f'Q{idx}'):
+        if idx == 0 or responses.get(f'Q{idx}'):
             st.subheader(f'Q{idx + 1}: {question}')
             key = f'question_{idx}'
             #placeholder = st.empty()
@@ -66,32 +66,31 @@ if __name__ == '__main__':
 
     #st.dataframe(df_response_table)
 
-    style = """<style>
-    .row-widget.stButton {
-    text-align: right;}
-    </style>"""
-    st.markdown(style, unsafe_allow_html=True)
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
     excel_file_path = "user_answers.xlsx"
     sheet_name = "Sheet1"
     existing_data = pd.read_excel(excel_file_path, sheet_name=sheet_name)
 
-    if st.button("Next Page"):
-        nan_check = (df_response_table['Response Index'] == 0).any()
-        if nan_check:
-            if st.button("Prev Page"):
-                switch_page("page2")
-            st.error("Please answer all the questions.")
-        else:
-            questions_no_list = df_response_table['Question']
-            response_index_list = df_response_table['Response Index']
-            for col_name, col_values in zip(questions_no_list, response_index_list):
-                existing_data.loc[0, col_name] = col_values
-                existing_data.to_excel(excel_file_path, sheet_name=sheet_name, index=False)
-            try:
-                st.success("Data successfully stored in the Excel file!")
-                switch_page("page4")
-            except Exception as e:
-                st.error(f"An error occurred: {e}")
+    with col6:
+        if st.button("Next Page"):
+            nan_check = (df_response_table['Response Index'] == 0).any()
+            if nan_check:
+                if st.button("Prev Page"):
+                    switch_page("page2")
+                st.error("Please answer all the questions.")
+            else:
+                questions_no_list = df_response_table['Question']
+                response_index_list = df_response_table['Response Index']
+                for col_name, col_values in zip(questions_no_list, response_index_list):
+                    existing_data.loc[0, col_name] = col_values
+                    existing_data.to_excel(excel_file_path, sheet_name=sheet_name, index=False)
+                try:
+                    st.success("Data successfully stored in the Excel file!")
+                    switch_page("page4")
+                except Exception as e:
+                    st.error(f"An error occurred: {e}")
 
-    elif st.button("Prev Page"):
-        switch_page("page2")
+    with col1:
+        if st.button("Prev Page"):
+            switch_page("page2")
+
