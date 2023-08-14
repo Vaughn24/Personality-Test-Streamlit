@@ -240,7 +240,7 @@ if __name__ == '__main__':
     st.markdown(style, unsafe_allow_html=True)
     if st.button("Next Page"):
         user_answers = "user_answers.xlsx"
-        pt_dataset = "physiognomy-pt-dataset.xlsx"
+        pt_dataset = "./dataset/physiognomy-pt-dataset.xlsx"
         sheet_name = "Sheet1"
         user_answers_df = pd.read_excel(user_answers, sheet_name=sheet_name)
         pt_data_df = pd.read_excel(pt_dataset, sheet_name=sheet_name)
@@ -269,9 +269,8 @@ if __name__ == '__main__':
         df_Hex = pd.DataFrame([Hex_dict])
         combined_df = pd.concat([name_to_image, df_pa, df_fnf, df_Hex], axis=1)
         new_row_df = combined_df
-        excel_file_name= 'physiognomy-pt-dataset.xlsx'
 
-        wb = openpyxl.load_workbook(excel_file_name)
+        wb = openpyxl.load_workbook(pt_dataset)
 
         sheet_name = 'Sheet1'
         sheet = wb[sheet_name]
@@ -283,7 +282,7 @@ if __name__ == '__main__':
             for col_idx, value in enumerate(row, start=1):
                 sheet.cell(row=next_row, column=col_idx, value=value)
             next_row += 1
-        wb.save(excel_file_name)
+        wb.save(pt_dataset)
         switch_page('page6')
 
 
