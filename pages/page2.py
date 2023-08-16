@@ -27,6 +27,18 @@ def email_valid(email):
     else:
         return False
 
+def correction():
+    st.markdown(
+        """ <style>
+                div[role="radiogroup"] >  :first-child{
+                    display: none !important;
+                }
+            </style>
+            """,
+        unsafe_allow_html=True
+    )
+
+
 if __name__ == '__main__':
     remove_sidebar()
     st.title('Personal Information')
@@ -46,41 +58,108 @@ if __name__ == '__main__':
         bd_value = df_birth_date
 
     first_name = st.text_input("First Name",value=existing_data.loc[0,'First Name'])
+    first_name_wmessage = "Please enter your First Name"
+    st.markdown(
+        f'<div class="fn_wmessage" style="color: red; font-size: 14px; display: none; background-color: 53, 100, 95, 0.7; color: '
+        f'#Ff8282; padding: 10px; border-radius: 5px;">{first_name_wmessage}</div>',
+        unsafe_allow_html=True
+    )
+
     last_name = st.text_input("Last Name",value=existing_data.loc[0,'Last Name'])
+    last_name_wmessage = "Please enter your Last Name"
+    st.markdown(
+        f'<div class="ln_wmessage" style="color: red; font-size: 14px; display: none; background-color: 53, 100, 95, 0.7; color: '
+        f'#Ff8282; padding: 10px; border-radius: 5px;">{last_name_wmessage}</div>',
+        unsafe_allow_html=True
+    )
     birth_date = st.date_input("Birth Date", min_value=datetime.date(1950,1,1), max_value=datetime.date(2024,1,1),value=bd_value)
     gender = st.radio("Gender", ["Male", "Female", "Prefer not to say"], horizontal=True,index=g_index)
     #email = st.text_input("Email Address",value=existing_data.loc[0,'Email Address'])
     email = st.text_input("Email Address")
-    col1, col2, col3,col4, col5,col6 = st.columns(6)
+    email_wmessage = "Please enter valid email address"
+    st.markdown(
+        f'<div class="email_wmessage" style="color: red; font-size: 14px; display: none; background-color: 53, 100, 95, 0.7; color: '
+        f'#Ff8282; padding: 10px; border-radius: 5px;">{email_wmessage}</div>',
+        unsafe_allow_html=True
+    )
+    email2_wmessage = "Please enter enter email address"
+    st.markdown(
+        f'<div class="email2_wmessage" style="color: red; font-size: 14px; display: none; background-color: 53, 100, 95, 0.7; color: '
+        f'#Ff8282; padding: 10px; border-radius: 5px;">{email2_wmessage}</div>',
+        unsafe_allow_html=True
+    )
+
+    col1, col2, col3,col4, col5, col6 = st.columns(6)
     style = """<style>
     .row-widget.stButton {
     margin-top: 2rem}
     </style>"""
     st.markdown(style, unsafe_allow_html=True)
-
-
-
-
     with col6:
         if st.button("Next Page"):
             if first_name == " " or first_name == "":
-                if st.button("Prev Page"):
-                    switch_page("page1")
-                st.warning("Please enter your First Name")
+                with col1:
+                    if st.button("Prev Page"):
+                        switch_page("page1")
+                st.markdown(
+                    """ <style>
+                            div.fn_wmessage{
+                                display: block !important;
+                            }
+                        </style>
+                        """,
+                    unsafe_allow_html=True
+                )
+                st.stop()
 
             elif last_name == " " or last_name == "":
-                if st.button("Prev Page"):
-                    switch_page("page1")
-                st.warning("Please enter your Last Name")
+                with col1:
+                    if st.button("Prev Page"):
+                        switch_page("page1")
+                    st.markdown(
+                        """ <style>
+                                div.ln_wmessage{
+                                    display: block !important;
+                                }
+                            </style>
+                            """,
+                        unsafe_allow_html=True
+                    )
+                    st.stop()
+
 
             elif not birth_date:
                 st.warning("Please select your Birth Date")
             elif email == " " or email == "":
-                if st.button("Prev Page"):
-                    switch_page("page1")
-                st.warning("Please enter your Email Address")
+                with col1:
+                    if st.button("Prev Page"):
+                        switch_page("page1")
+                    st.markdown(
+                        """ <style>
+                                div.email2_wmessage{
+                                    display: block !important;
+                                }
+                            </style>
+                            """,
+                        unsafe_allow_html=True
+                    )
+                    st.stop()
+
             elif not email_valid(email):
-                st.warning("Please enter a valid Email Address")
+                with col1:
+                    if st.button("Prev Page"):
+                        switch_page("page1")
+                    st.markdown(
+                        """ <style>
+                                div.email_wmessage{
+                                    display: block !important;
+                                }
+                            </style>
+                            """,
+                        unsafe_allow_html=True
+                    )
+                    st.stop()
+
             else:
                 # Create a DataFrame from the form data
                 data = {
