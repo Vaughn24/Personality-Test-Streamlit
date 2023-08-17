@@ -25,7 +25,7 @@ if __name__ == '__main__':
     </style>"""
     st.markdown(style, unsafe_allow_html=True)
     st.write("""
-    Thank you so much for your participation. 
+ 
     We genuinely appreciate your completion of the test, as they are incredibly valuable in helping us understand the subject better. 
     Please rest assured that the information you've shared will be kept confidential and will not be shared publicly. 
     We will only use your responses for analysis and to make improvements where necessary.
