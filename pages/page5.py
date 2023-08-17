@@ -5,6 +5,9 @@ from itertools import chain
 from streamlit_extras.switch_page_button import switch_page
 import openpyxl
 import os
+from PIL import Image
+
+
 def remove_sidebar():
 
     st.set_page_config(initial_sidebar_state="collapsed")
@@ -28,6 +31,10 @@ def txt_to_list(txt_file_path):
     with open(txt_file_path, 'r') as txt_file:
         data_list = txt_file.read().splitlines()
     return data_list
+
+def load_image(image_file):
+    img = Image.open(image_file)
+    return img
 
 if __name__ == '__main__':
     remove_sidebar()
@@ -207,28 +214,41 @@ if __name__ == '__main__':
         df_Hex_column[2]: PA_sum
     }
     df_Hex_results = pd.DataFrame(Hex_data)
+    col1, col2 = st.columns(2)
 
-    st.markdown(
-        f"""
-    <span style='background-color: none;'>Name:</span>
-    <span style='font-size: Large;'>{Name}</span>
-    
-    <span style='background-color: none;'>Birth Date:</span>
-    <span style='font-size: Large;'>{Birth_Date[:10]}</span>
+    with col1:
+        imgname = "user_img/" + str(df3["Image Name"][row_index])
+        image_file = imgname
+        if image_file is not None:
+            img = load_image(image_file)
+            st.image(img)
 
-    <span style='background-color: none;'>Gender:</span>
-    <span style='font-size: Large;'>{Gender}</span>
+    with col2:
+        st.markdown(
+            f"""
+            <span style='background-color: none;'>Name:</span>
+            <span style='font-size: Large;'>{Name}</span>
 
-    <span style='background-color: none;'>Email:</span>
-    <span style='font-size: Large;'>{Email}</span>
+            <span style='background-color: none;'>Birth Date:</span>
+            <span style='font-size: Large;'>{Birth_Date[:10]}</span>
 
-""",
-        unsafe_allow_html=True)
+            <span style='background-color: none;'>Gender:</span>
+            <span style='font-size: Large;'>{Gender}</span>
+
+            <span style='background-color: none;'>Email:</span>
+            <span style='font-size: Large;'>{Email}</span>
+
+        """,
+            unsafe_allow_html=True)
 
 
-    df_PA_results
-    df_FnF_results
-    df_Hex_results
+    col3, col4 = st.columns(2)
+    with col3:
+        df_PA_results
+
+    with col4:
+        df_FnF_results
+        df_Hex_results
 
 
     ########## For Checking ######################
