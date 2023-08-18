@@ -31,7 +31,7 @@ if __name__ == '__main__':
     </style>"""
     st.markdown(style, unsafe_allow_html=True)
 
-    image_file = st.file_uploader("Upload An Image", type=['png', 'jpeg', 'jpg'])
+    image_file = st.file_uploader("Upload An Image", type=['png', 'jpeg', 'jpg'], accept_multiple_files=False, )
     if image_file is not None:
         file_details = {"FileName": image_file.name, "FileType": image_file.type}
         #st.write(file_details)
