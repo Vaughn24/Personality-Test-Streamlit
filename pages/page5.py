@@ -304,7 +304,20 @@ if __name__ == '__main__':
             next_row += 1
         wb.save(pt_dataset)
         switch_page('page6')
+    if st.button("Checking Button"):
+        favorable_scores = [questionnaire_score_not_scaled[key] for key in favorable if
+                            key in questionnaire_score_not_scaled]
+        unfavorable_scores = [questionnaire_score_not_scaled[key] for key in unfavorable if
+                              key in questionnaire_score_not_scaled]
 
+        output_file = 'checking.csv'
+
+        with open(output_file, 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(['Favorable', 'Rating', 'Unfavorable', 'Rating'])  # Write header if needed
+            for i, j in zip(favorable, unfavorable):
+                writer.writerow([i, questionnaire_score_not_scaled[i], j, questionnaire_score_not_scaled[j]])
+        csvfile.close()
 
 
 
