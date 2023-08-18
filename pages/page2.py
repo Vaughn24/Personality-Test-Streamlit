@@ -75,7 +75,14 @@ if __name__ == '__main__':
     birth_date = st.date_input("Birth Date", min_value=datetime.date(1950,1,1), max_value=datetime.date(2024,1,1),value=bd_value)
     gender = st.radio("Gender", ["Male", "Female", "Prefer not to say"], horizontal=True,index=g_index)
     #email = st.text_input("Email Address",value=existing_data.loc[0,'Email Address'])
-    email = st.text_input("Email Address")
+
+    email_default_value = " "
+    if existing_data.loc[0,'Email Address'] == " ":
+        email_default_value = "@gmail.com"
+    else:
+        email_default_value = existing_data.loc[0,'Email Address']
+
+    email = st.text_input("Email Address",value=email_default_value)
     email_wmessage = "Please enter valid email address"
     st.markdown(
         f'<div class="email_wmessage" style="color: red; font-size: 14px; display: none; background-color: 53, 100, 95, 0.7; color: '

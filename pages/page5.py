@@ -244,11 +244,11 @@ if __name__ == '__main__':
 
     col3, col4 = st.columns(2)
     with col3:
-        df_PA_results
+        st.dataframe(df_PA_results,hide_index=True)
 
     with col4:
-        df_FnF_results
-        df_Hex_results
+        st.dataframe(df_FnF_results,hide_index=True)
+        st.dataframe(df_Hex_results,hide_index=True)
 
 
     ########## For Checking ######################
