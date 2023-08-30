@@ -78,7 +78,7 @@ if __name__ == '__main__':
 
     email_default_value = " "
     if existing_data.loc[0,'Email Address'] == " ":
-        email_default_value = "@gmail.com"
+        email_default_value = ""
     else:
         email_default_value = existing_data.loc[0,'Email Address']
 
